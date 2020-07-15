@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Domain.Arguments;
 using Domain.Interfaces.IServices;
@@ -36,14 +35,14 @@ namespace APIWeb.Controllers
             {
                return await ResponseAsync(response);
             }
-            return CreatedAtAction("ConsultarConfiguracoes", new { mensagem = "Ocorreu um erro na consulta." });
+            return CreatedAtAction("ListarPessoas", new { mensagem = "Ocorreu um erro na consulta." });
          }
          catch (Exception ex)
          {
             return await ResponseExceptionAsync(ex);
          }
       }
-
+            
       // GET api/pessoa/buscarpessoa
       [HttpGet("buscarpessoa/{id}")]
       public ActionResult<string> BuscarPessoa(int id)
@@ -80,6 +79,25 @@ namespace APIWeb.Controllers
       [HttpDelete("excluirpessoa/{id}")]
       public void ExcluirPessoa(int id)
       {
+      }
+
+      // GET api/pessoa/listarufs
+      [HttpGet("listarufs")]
+      public async Task<IActionResult> ListarUfs()
+      {
+         try
+         {
+            var response = _servicePessoa.ListarUfs();
+            if (response != null)
+            {
+               return await ResponseAsync(response);
+            }
+            return CreatedAtAction("ListarUfs", new { mensagem = "Ocorreu um erro na consulta." });
+         }
+         catch (Exception ex)
+         {
+            return await ResponseExceptionAsync(ex);
+         }
       }
    }
 }

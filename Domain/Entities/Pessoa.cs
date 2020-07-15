@@ -1,5 +1,6 @@
 ﻿using Domain.Entities.Base;
 using System;
+using System.Collections.Generic;
 
 namespace Domain.Entities
 {
@@ -16,6 +17,7 @@ namespace Domain.Entities
          if (ValidarTextoCPF(_cpf)){ CPF = _cpf;  }
          if (!ValidarCpf(CPF)) { throw new Exception("O CPF informado é inválido!"); }
          DataNascimento = ValidarData(_dataNascimento);
+         if (ValidarTextoUF(_uf)) { Uf = new UF(_uf, ""); }
       }
 
       public Pessoa(int Id, string nome, string cPF, UF uF, string _dataNascimento)
@@ -37,7 +39,8 @@ namespace Domain.Entities
       public UF Uf { get; set; }
 
 
-#region "Validações da Classe"
+
+      #region "Validações da Classe"
 
       public static bool ValidarNome(string nome)
       {
@@ -47,6 +50,10 @@ namespace Domain.Entities
       public static bool ValidarTextoCPF(string _CPF)
       {
          return String.IsNullOrWhiteSpace(_CPF) ? throw new ArgumentNullException(nameof(_CPF), $"{nameof(CPF)} parâmetro obrigatório") : true;
+      }
+      public static bool ValidarTextoUF(string _UF)
+      {
+         return String.IsNullOrWhiteSpace(_UF) ? throw new ArgumentNullException(nameof(_UF), $"{nameof(UF)} Informe a sigla ou o Id da UF") : true;
       }
 
       public static bool ValidarCpf(string cpf)

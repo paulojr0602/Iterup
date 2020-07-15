@@ -21,7 +21,7 @@ namespace UnitTest
          //_pessoa = new Domain.Entities.Pessoa("Almeida", "11040128637", "GO", "01/01/2000");
 
          //Teste de CRUD
-         request = new PessoaRequest("Paulo", "11040128637", "GO", "01/01/2000");
+         request = new PessoaRequest("Paulo", "11040128637",  "01/01/2000", "GO");
          _servicePessoa =  servicePessoa;
          PessoaResponse response = _servicePessoa.CadastrarPessoa(request);
          if (response == null) { throw new Exception("Erro"); }

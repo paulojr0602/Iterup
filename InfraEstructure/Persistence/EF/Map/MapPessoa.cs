@@ -13,14 +13,26 @@ namespace InfraEstructure.Persistence.EF.Map
       {
          //Nome da tabela
          builder.ToTable("Pessoa");
-         builder.HasIndex(u => u.Id).IsUnique();
+         builder.HasIndex(p => p.Id).IsUnique();
          //Chave primária
-         builder.HasKey(x => x.Id);
+         builder.HasKey(p => p.Id);
+         //Chave estrangeira da tabela Pessoa
+         builder.HasOne(p => p.Uf)
+                .WithOne()
+                .HasForeignKey<Pessoa>(p => p.IdUf);
 
          builder.Property(x => x.Nome).HasMaxLength(50).IsRequired().HasColumnName("Nome");
          builder.Property(x => x.CPF).HasMaxLength(11).IsRequired().HasColumnName("CPF");
-         builder.Property(x => x.IdUf).IsRequired().HasColumnName("IdUF");
          builder.Property(x => x.DataNascimento).IsRequired().HasColumnName("DataNascimento");
+         //builder.Property(u => u.IdUf).IsRequired().HasColumnName("IdUF");
+
+         //builder.OwnsOne<UF>(p => p.Uf, u =>
+         //{
+         //   u.Property(s => s.Sigla).IsRequired();
+         //   u.Property(e => e.Estado).IsRequired();
+         //   u.Property(i => i.Id).IsRequired();
+         //});
+
 
       }
    }

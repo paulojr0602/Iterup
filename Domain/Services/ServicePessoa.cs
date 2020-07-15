@@ -20,16 +20,16 @@ namespace Domain.Services
       public PessoaResponse CadastrarPessoa(PessoaRequest request)
       {
          if (request == null) { return null; }
-
-         var entidade = new Pessoa(request.Nome, request.CPF, request.UF, request.DataNascimento);
+         
+         var entidade = new Pessoa(request.Nome, request.Cpf, request.Uf, request.DataNascimento);
          //Dentro do PessoaResponse existe um método que converte explicitamente para retornar o objeto
          return (PessoaResponse)repositoryPessoa.CadastrarPessoa(entidade);
       }
 
       public IEnumerable<PessoaResponse> ListarPessoas()
       {
-         IEnumerable<Pessoa> configuracoesCollection = repositoryPessoa.ListarPessoas();
-         var response = configuracoesCollection.ToList().Select(entidade => (PessoaResponse)entidade);
+         IEnumerable<Pessoa> pessoasCollection = repositoryPessoa.ListarPessoas();
+         var response = pessoasCollection.ToList().Select(entidade => (PessoaResponse)entidade);
 
          return response;
       }
@@ -55,9 +55,13 @@ namespace Domain.Services
          throw new NotImplementedException();
       }
 
-      public void Dispose()
+      public IEnumerable<UfResponse> ListarUfs()
       {
-         throw new NotImplementedException();
+         IEnumerable<UF> ufCollection = repositoryPessoa.ListarUfs();
+         var response = ufCollection.ToList().Select(entidade => (UfResponse)entidade);
+
+         return response;
       }
+      
    }
 }

@@ -13,11 +13,13 @@ namespace InfraEstructure.Persistence.Repositories
    /// </summary>
    public class RepositoryPessoa : IRepositoryPessoa
    {
+      private UF uF;
       private readonly Context context;
       //O contexto é passado por Injeção de Dependência (melhor desacoplamento e manutenção do código)
       public RepositoryPessoa(Context context)
       {
          this.context = context;
+         CarregarUFs();
       }
 
       public Pessoa CadastrarPessoa(Pessoa pessoa)
@@ -30,6 +32,11 @@ namespace InfraEstructure.Persistence.Repositories
                throw new Exception("Pessoa já cadastrada para esse CPF.");
             }
          }
+         if (!String.IsNullOrWhiteSpace(pessoa.Uf.Sigla))
+         { 
+            //Buscando a entidade UF Caso tenha informado a Sigla ("GO" por exemplo)
+            pessoa.Uf = ConsultarUfPorSigla(pessoa.Uf.Sigla);
+         }
          //Adiciona a Pessoa no Contexto caso esteja tudo ok.
          context.Pessoas.Add(pessoa);
          }
@@ -37,6 +44,8 @@ namespace InfraEstructure.Persistence.Repositories
          {
             throw new Exception(ex.Message);
          }
+         //Listando as UFs para preencher a Uf dentro da entidade de Pessoa.
+         //IEnumerable<UF> ufCollection = ListarUfs();
          return pessoa;
       }
 
@@ -108,7 +117,36 @@ namespace InfraEstructure.Persistence.Repositories
          {
             throw new Exception("Não existe Pessoa cadastrada.");
          }
+
+         foreach (Pessoa pessoa in context.Pessoas )
+         {
+            pessoa.Uf = ConsultarUfPorId(pessoa.IdUf);
+         }
+
          return context.Pessoas.ToList();
+      }
+
+      private void CarregarUFs()
+      {
+         context.Ufs.Add(new UF("GO", "Goiás"));
+         context.Ufs.Add(new UF("DF", "Distrito Federal"));
+         context.Ufs.Add(new UF("BA", "Bahia"));
+         context.Ufs.Add(new UF("SP", "São Paulo"));
+         context.Ufs.Add(new UF("MG", "Minas Gerais"));
+         context.SaveChanges();
+      }
+      public IEnumerable<UF> ListarUfs()
+      {
+         return context.Ufs.ToList();
+      }
+
+      public UF ConsultarUfPorSigla(string sigla)
+      {
+         return context.Ufs.FirstOrDefault(x => x.Sigla == sigla);
+      }
+      public UF ConsultarUfPorId(int IdUf)
+      {
+         return context.Ufs.FirstOrDefault(x => x.Id == IdUf);
       }
 
    }

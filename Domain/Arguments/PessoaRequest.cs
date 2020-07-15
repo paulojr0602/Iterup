@@ -6,17 +6,18 @@
    /// </summary>
    public class PessoaRequest
    {
-      public PessoaRequest(string nome,  string cPF, string uF, string dataNascimento)
+      public PessoaRequest(string nome,  string cpf,  string dataNascimento, string uf)
       {
          Nome = nome;
-         CPF = cPF;
-         UF = uF;
+         Cpf = cpf;
+         Uf = uf;
          DataNascimento = dataNascimento;
       }
+      
 
       public string Nome { get; private set; }
-      public string CPF { get; private set; }
-      public string UF { get; private set; }
+      public string Cpf { get; private set; }
       public string DataNascimento { get; private set; }
+      public string Uf { get;  set; }
    }
 }
