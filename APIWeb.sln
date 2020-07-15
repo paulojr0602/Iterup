@@ -5,6 +5,12 @@ VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIWeb", "APIWeb\APIWeb.csproj", "{356A7CF2-FFB7-4674-A52B-A8083B300510}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{67408B10-0A28-48F6-8077-DD8313C41561}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{37E4B327-FE5B-4A77-916D-BA631300869F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfraEstructure", "InfraEstructure\InfraEstructure.csproj", "{246F8F87-6A84-4F18-85C4-DEC37D0B215A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{356A7CF2-FFB7-4674-A52B-A8083B300510}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{356A7CF2-FFB7-4674-A52B-A8083B300510}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{356A7CF2-FFB7-4674-A52B-A8083B300510}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67408B10-0A28-48F6-8077-DD8313C41561}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67408B10-0A28-48F6-8077-DD8313C41561}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67408B10-0A28-48F6-8077-DD8313C41561}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67408B10-0A28-48F6-8077-DD8313C41561}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37E4B327-FE5B-4A77-916D-BA631300869F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37E4B327-FE5B-4A77-916D-BA631300869F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37E4B327-FE5B-4A77-916D-BA631300869F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37E4B327-FE5B-4A77-916D-BA631300869F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{246F8F87-6A84-4F18-85C4-DEC37D0B215A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{246F8F87-6A84-4F18-85C4-DEC37D0B215A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{246F8F87-6A84-4F18-85C4-DEC37D0B215A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{246F8F87-6A84-4F18-85C4-DEC37D0B215A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
