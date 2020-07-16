@@ -1,4 +1,5 @@
-﻿using Domain.Entities.Base;
+﻿using Domain.Arguments;
+using Domain.Entities.Base;
 using System;
 using System.Collections.Generic;
 
@@ -22,12 +23,13 @@ namespace Domain.Entities
 
       public Pessoa(int Id, string nome, string cPF, UF uF, string _dataNascimento)
       {
+         this.Id = Id;
          Nome = nome;
          CPF = cPF;
          Uf = uF;
          DataNascimento = ValidarData(_dataNascimento);
       }
-      
+            
       protected Pessoa()
       { 
       }
@@ -37,8 +39,6 @@ namespace Domain.Entities
       public string DataNascimento { get; private set; }
       public int IdUf { get; set; }
       public UF Uf { get; set; }
-
-
 
       #region "Validações da Classe"
 
@@ -51,6 +51,7 @@ namespace Domain.Entities
       {
          return String.IsNullOrWhiteSpace(_CPF) ? throw new ArgumentNullException(nameof(_CPF), $"{nameof(CPF)} parâmetro obrigatório") : true;
       }
+
       public static bool ValidarTextoUF(string _UF)
       {
          return String.IsNullOrWhiteSpace(_UF) ? throw new ArgumentNullException(nameof(_UF), $"{nameof(UF)} Informe a sigla ou o Id da UF") : true;

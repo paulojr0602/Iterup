@@ -12,11 +12,11 @@ namespace Domain.Interfaces.IServices
    public interface IServicePessoa
    {
       PessoaResponse CadastrarPessoa(PessoaRequest request);
-      PessoaResponse ConsultarPessoaPorId(PessoaRequest request);
+      PessoaResponse ConsultarPessoaPorId(int id);
       IEnumerable<PessoaResponse> ListarPessoas();
-      IEnumerable<PessoaResponse> ListarPessoasPorUF();
+      IEnumerable<PessoaResponse> ListarPessoasPorUF(string uf);
       IEnumerable<UfResponse> ListarUfs();
-      PessoaResponse EditarPessoa(PessoaRequest request);
-      string Excluir(int IdPessoa);
+      PessoaResponse EditarPessoa(int id, PessoaRequest request);
+      bool Excluir(int IdPessoa);
    }
 }

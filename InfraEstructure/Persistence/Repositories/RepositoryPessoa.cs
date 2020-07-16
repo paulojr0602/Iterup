@@ -66,34 +66,39 @@ namespace InfraEstructure.Persistence.Repositories
 
       public Pessoa ConsultarPessoaPorId(int Id)
       {
-         return context.Pessoas.FirstOrDefault(x => x.Id == Id);
+         var pessoa = context.Pessoas.FirstOrDefault(x => x.Id == Id);
+         if(pessoa != null)
+         { 
+            pessoa.Uf = ConsultarUfPorId(pessoa.IdUf);
+            return pessoa;
+         }
+         return null;
       }
 
-      public IEnumerable<Pessoa> ConsultarPessoaPorUF(string uf)
+      public IEnumerable<Pessoa> ListarPessoasPorUF(string uf)
       {
+         foreach (Pessoa pessoa in context.Pessoas)
+         {
+            pessoa.Uf = ConsultarUfPorId(pessoa.IdUf);
+         }
          return context.Pessoas.Where(x => x.Uf.Sigla == uf).ToList();
       }
 
-      public Pessoa EditarPessoa(Pessoa pessoa)
+      public Pessoa EditarPessoa(int id, Pessoa pessoa)
       {
          try
          {
-            if (Existe(pessoa.CPF))
-            {
-               var pessoaBD = context.Pessoas.Where(p => p.CPF == pessoa.CPF).FirstOrDefault();
+            var pessoaBD = ConsultarPessoaPorId(id);
 
-               if (pessoaBD != null)
-               {
-                  var _pessoa = new Pessoa(pessoaBD.Id,pessoa.Nome, pessoa.CPF, pessoa.Uf, pessoa.DataNascimento);
-                  context.Pessoas.Remove(pessoaBD);
-                  context.Pessoas.Add(_pessoa);
-               }
-            }
-            else
+            if (pessoaBD != null)
             {
+               var _pessoa = new Pessoa(pessoaBD.Id,pessoa.Nome, pessoa.CPF, pessoa.Uf, pessoa.DataNascimento);
+               context.Pessoas.Remove(pessoaBD);
+               context.Pessoas.Add(_pessoa);
+            } else{
                throw new Exception("Houve um problema ao tentar encontrar o registro. Verifique.");
             }
-            return pessoa;
+         return pessoa;
          }
          catch (Exception ex)
          {
@@ -105,9 +110,10 @@ namespace InfraEstructure.Persistence.Repositories
       {
          var _pessoa = ConsultarPessoaPorId(Id);
          if (_pessoa == null){
-            throw new Exception("Registro inexistente para esse Id.");
+            return false;
          }
          context.Pessoas.Remove(_pessoa);
+         context.SaveChanges();
          return true;
       }
 
@@ -115,7 +121,7 @@ namespace InfraEstructure.Persistence.Repositories
       {
          if (context.Pessoas.Count() == 0)
          {
-            throw new Exception("Não existe Pessoa cadastrada.");
+            return null;
          }
 
          foreach (Pessoa pessoa in context.Pessoas )
@@ -126,15 +132,20 @@ namespace InfraEstructure.Persistence.Repositories
          return context.Pessoas.ToList();
       }
 
+#region "Operações da UF"     
+
       private void CarregarUFs()
       {
-         context.Ufs.Add(new UF("GO", "Goiás"));
-         context.Ufs.Add(new UF("DF", "Distrito Federal"));
-         context.Ufs.Add(new UF("BA", "Bahia"));
-         context.Ufs.Add(new UF("SP", "São Paulo"));
-         context.Ufs.Add(new UF("MG", "Minas Gerais"));
-         context.SaveChanges();
+         if (context.Ufs.Count() == 0 ) { 
+            context.Ufs.Add(new UF("GO", "Goiás"));
+            context.Ufs.Add(new UF("DF", "Distrito Federal"));
+            context.Ufs.Add(new UF("BA", "Bahia"));
+            context.Ufs.Add(new UF("SP", "São Paulo"));
+            context.Ufs.Add(new UF("MG", "Minas Gerais"));
+            context.SaveChanges();
+         }
       }
+
       public IEnumerable<UF> ListarUfs()
       {
          return context.Ufs.ToList();
@@ -144,10 +155,13 @@ namespace InfraEstructure.Persistence.Repositories
       {
          return context.Ufs.FirstOrDefault(x => x.Sigla == sigla);
       }
+
       public UF ConsultarUfPorId(int IdUf)
       {
          return context.Ufs.FirstOrDefault(x => x.Id == IdUf);
       }
+
+#endregion
 
    }
 }

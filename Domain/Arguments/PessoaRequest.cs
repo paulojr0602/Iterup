@@ -1,4 +1,6 @@
-﻿namespace Domain.Arguments
+﻿using System;
+
+namespace Domain.Arguments
 {
    /// <summary>
    /// Classe de Arguntos de Pessoa Request
@@ -13,11 +15,10 @@
          Uf = uf;
          DataNascimento = dataNascimento;
       }
-      
 
-      public string Nome { get; private set; }
-      public string Cpf { get; private set; }
-      public string DataNascimento { get; private set; }
+      public string Nome { get; set; }
+      public string Cpf { get; set; }
+      public string DataNascimento { get; set; }
       public string Uf { get;  set; }
    }
 }

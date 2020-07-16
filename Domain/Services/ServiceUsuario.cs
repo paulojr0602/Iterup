@@ -8,6 +8,10 @@ using Response = Domain.Arguments.Base.Response;
 
 namespace Domain.Services
 {
+   /// <summary>
+   /// Classe de Implementação do Serviço da Usuário
+   /// Autor: Paulo Roberto de Almeida Jr. Data:14/07/2020
+   /// </summary>
    public class ServiceUsuario : IServiceUsuario
    {
       //Dependencia do Serviço de Usuário

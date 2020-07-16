@@ -5,6 +5,10 @@ using Domain.Entities;
 
 namespace Domain.Arguments
 {
+/// <summary>
+/// Classe de Response de UF
+/// Autor: Paulo Roberto de Almeida Jr. Data:15/07/2020
+/// </summary>
    public class UfResponse
    {
       public int Id { get; set; }

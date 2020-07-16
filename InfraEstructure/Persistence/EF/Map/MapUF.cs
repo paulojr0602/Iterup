@@ -7,6 +7,10 @@ using System.Text;
 
 namespace InfraEstructure.Persistence.EF.Map
 {
+   /// <summary>
+   /// Classe de Map da UF
+   /// Autor: Paulo Roberto de Almeida Jr. Data:14/07/2020
+   /// </summary>
    public class MapUF
    {
       public void Configure(EntityTypeBuilder<UF> builder)

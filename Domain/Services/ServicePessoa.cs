@@ -8,6 +8,10 @@ using System.Linq;
 
 namespace Domain.Services
 {
+   /// <summary>
+   /// Classe de Implementação do Serviço de Pessoa
+   /// Autor: Paulo Roberto de Almeida Jr. Data:14/07/2020
+   /// </summary>
    public class ServicePessoa : IServicePessoa
    {
       private readonly IRepositoryPessoa repositoryPessoa;
@@ -29,35 +33,46 @@ namespace Domain.Services
       public IEnumerable<PessoaResponse> ListarPessoas()
       {
          IEnumerable<Pessoa> pessoasCollection = repositoryPessoa.ListarPessoas();
+         if (pessoasCollection.Count() == 0) { return null; }
          var response = pessoasCollection.ToList().Select(entidade => (PessoaResponse)entidade);
 
          return response;
       }
 
-      public PessoaResponse ConsultarPessoaPorId(PessoaRequest request)
+      public PessoaResponse ConsultarPessoaPorId(int id)
       {
-         throw new NotImplementedException();
+         return (PessoaResponse)repositoryPessoa.ConsultarPessoaPorId(id) ;
       }
 
-      public PessoaResponse EditarPessoa(PessoaRequest request)
+      public PessoaResponse EditarPessoa(int id, PessoaRequest request)
       {
-         throw new NotImplementedException();
+         //throw new NotImplementedException();
+         var entidade = new Pessoa(request.Nome, request.Cpf, request.Uf, request.DataNascimento);
+         return (PessoaResponse)repositoryPessoa.EditarPessoa(id, entidade);
       }
 
-      public string Excluir(int IdPessoa)
+      public bool Excluir(int IdPessoa)
       {
-         throw new NotImplementedException();
+         if (!repositoryPessoa.ExcluirPessoa(IdPessoa))
+         { 
+            return false; 
+         }
+         return true;
       }
 
-
-      public IEnumerable<PessoaResponse> ListarPessoasPorUF()
+      public IEnumerable<PessoaResponse> ListarPessoasPorUF(string uf)
       {
-         throw new NotImplementedException();
+         IEnumerable<Pessoa> pessoasCollection = repositoryPessoa.ListarPessoasPorUF(uf);
+         if (pessoasCollection.Count() == 0) { return null; }
+         var response = pessoasCollection.ToList().Select(entidade => (PessoaResponse)entidade);
+
+         return response;
       }
 
       public IEnumerable<UfResponse> ListarUfs()
       {
          IEnumerable<UF> ufCollection = repositoryPessoa.ListarUfs();
+         if(ufCollection.Count() == 0) { return null; }
          var response = ufCollection.ToList().Select(entidade => (UfResponse)entidade);
 
          return response;

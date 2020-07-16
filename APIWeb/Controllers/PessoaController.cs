@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using Domain.Arguments;
 using Domain.Interfaces.IServices;
@@ -13,7 +14,7 @@ namespace APIWeb.Controllers
    /// Classe Controller de Pessoas
    /// Ações da API para objeto Pessoa (Get,Post, Put, Delete)
    /// </summary>
-   [Route("api/[controller]")]
+   [Route("api/pessoas")]
    [ApiController]
    public class PessoaController : Base.ControllerBase
    {
@@ -24,80 +25,96 @@ namespace APIWeb.Controllers
          _servicePessoa = servicePessoa;
       }
 
-      // GET api/pessoa/listarpessoas
-      [HttpGet("listarpessoas")]
-      public async Task<IActionResult> ListarPessoas()
+      // GET api/pessoas
+      [HttpGet()]
+      public async Task<IActionResult> Get()
       {
-         try
+         var response = _servicePessoa.ListarPessoas();
+         if (response != null)
          {
-            var response = _servicePessoa.ListarPessoas();
-            if (response != null)
-            {
-               return await ResponseAsync(response);
-            }
-            return CreatedAtAction("ListarPessoas", new { mensagem = "Ocorreu um erro na consulta." });
-         }
-         catch (Exception ex)
-         {
-            return await ResponseExceptionAsync(ex);
-         }
-      }
-            
-      // GET api/pessoa/buscarpessoa
-      [HttpGet("buscarpessoa/{id}")]
-      public ActionResult<string> BuscarPessoa(int id)
-      {
-         return "value";
-      }
-
-      // POST api/pessoa/cadastrarpessoa
-      [HttpPost("cadastrarpessoa")]
-      public async Task<IActionResult> CadastrarPessoa([FromBody] PessoaRequest request)
-      {
-         try
-         {
-            PessoaResponse response = _servicePessoa.CadastrarPessoa(request);
-            if(response != null)
-            {
-               return await ResponseAsync(response);
-            }
-            return CreatedAtAction("CadastrarPessoa", new { mensagem = "Ocorreu um erro ao tentar cadastrar a pessoa. Verifique." });
-         }
-         catch (Exception ex)
-         {
-            return await ResponseExceptionAsync(ex);
+            return await ResponseAsync(response);
+         } else {
+            return CreatedAtAction("Get", new { HttpStatusCode.NoContent });
          }
       }
 
-      // PUT api/pessoa/alterarpessoa
-      [HttpPut("alterarpessoa/{id}")]
-      public void EditarPessoa(int id, [FromBody] string value)
+      // GET api/pessoas/id
+      [HttpGet("{id}")]
+      public async Task<IActionResult> Get(int id)
       {
+         var response = _servicePessoa.ConsultarPessoaPorId(id);
+         if (response.CPF != null)
+         {
+            return await ResponseAsync(response);
+         }
+         else {
+            return CreatedAtAction("Get", new { HttpStatusCode.NoContent });
+         }
       }
 
-      // DELETE api/pessoa/excluirpessoa
-      [HttpDelete("excluirpessoa/{id}")]
-      public void ExcluirPessoa(int id)
+      // GET api/pessoas/uf?uf
+      [HttpGet("uf/{uf}")]
+      public async Task<IActionResult> Get(string uf)
       {
+         var response = _servicePessoa.ListarPessoasPorUF(uf);
+         if (response != null)
+         {
+            return await ResponseAsync(response);
+         }
+         else
+         {
+            return CreatedAtAction("Get", new { HttpStatusCode.NoContent });
+         }
       }
 
-      // GET api/pessoa/listarufs
-      [HttpGet("listarufs")]
-      public async Task<IActionResult> ListarUfs()
+      // POST api/pessoas
+      [HttpPost()]
+      public async Task<IActionResult> Post([FromBody] PessoaRequest request)
       {
-         try
+         PessoaResponse response = _servicePessoa.CadastrarPessoa(request);
+         if(response != null)
          {
-            var response = _servicePessoa.ListarUfs();
-            if (response != null)
-            {
-               return await ResponseAsync(response);
-            }
-            return CreatedAtAction("ListarUfs", new { mensagem = "Ocorreu um erro na consulta." });
+            return await ResponseAsync(response);
+         } else {
+            return CreatedAtAction("Post", new { HttpStatusCode.BadRequest });
          }
-         catch (Exception ex)
+      }
+
+      // PUT api/pessoas/id
+      [HttpPut("{id}")]
+      public async Task<IActionResult> Put(int id, [FromBody] PessoaRequest request)
+      {
+         var response = _servicePessoa.EditarPessoa(id, request);
+         if (response != null)
          {
-            return await ResponseExceptionAsync(ex);
+            return await ResponseAsync(response);
+         } else {
+            return CreatedAtAction("Put", new { HttpStatusCode.BadRequest });
          }
+      }
+
+      // DELETE api/pessoas/id
+      [HttpDelete("{id}")]
+      public async Task<IActionResult> Delete(int id)
+      {
+         var response = _servicePessoa.Excluir(id);
+         if (!response)
+         {
+            return  CreatedAtAction("Put", new { HttpStatusCode.BadRequest });
+         }
+         return CreatedAtAction("Put", new { HttpStatusCode.OK });
+      }
+
+      // GET api/pessoas/ufs
+      [HttpGet("ufs")]
+      public async Task<IActionResult> GetUfs()
+      {
+         var response = _servicePessoa.ListarUfs();
+         if (response != null)
+         {
+            return await ResponseAsync(response);
+         }
+         return CreatedAtAction("GetUfs", new { HttpStatusCode.NoContent });
       }
    }
 }

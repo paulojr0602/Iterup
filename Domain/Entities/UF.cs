@@ -12,11 +12,17 @@ namespace Domain.Entities
    public class UF: EntityBase
    {
 
-      public UF(string sigla, string estado)
+      public UF(int Id, string sigla, string estado)
       {
+         this.Id = Id;
          if (ValidarTextoSigla(sigla)) { Sigla = sigla; }
          if (String.IsNullOrWhiteSpace(estado)) { Estado = ""; } else { Estado = estado; }
 
+      }
+      public UF( string sigla, string estado)
+      {
+         if (ValidarTextoSigla(sigla)) { Sigla = sigla; }
+         if (String.IsNullOrWhiteSpace(estado)) { Estado = ""; } else { Estado = estado; }
       }
 
       public string Sigla { get; private set; }

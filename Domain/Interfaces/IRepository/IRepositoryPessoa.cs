@@ -11,12 +11,12 @@ namespace Domain.Interfaces.IRepository
    /// </summary>
    public interface IRepositoryPessoa
    {
-      Pessoa ConsultarPessoaPorId(int Id);
-      IEnumerable<Pessoa> ConsultarPessoaPorUF(string UF);
+      Pessoa ConsultarPessoaPorId(int id);
+      IEnumerable<Pessoa> ListarPessoasPorUF(string uf);
       IEnumerable<Pessoa> ListarPessoas();
       IEnumerable<UF> ListarUfs();
       Pessoa CadastrarPessoa(Pessoa pessoa);
-      Pessoa EditarPessoa(Pessoa pessoa);
-      bool ExcluirPessoa(int Id);
+      Pessoa EditarPessoa(int id, Pessoa pessoa);
+      bool ExcluirPessoa(int id);
    }
 }

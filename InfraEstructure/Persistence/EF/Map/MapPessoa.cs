@@ -7,6 +7,10 @@ using System.Text;
 
 namespace InfraEstructure.Persistence.EF.Map
 {
+   /// <summary>
+   /// Classe de Mapeamento de Pessoa
+   /// Autor: Paulo Roberto de Almeida Jr. Data:14/07/2020
+   /// </summary>
    public class MapPessoa : IEntityTypeConfiguration<Pessoa>
    {
       public void Configure(EntityTypeBuilder<Pessoa> builder)
