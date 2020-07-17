@@ -11,7 +11,7 @@ namespace Domain.Arguments
 /// </summary>
    public class UfResponse
    {
-      public int Id { get; set; }
+      public int id { get; set; }
       public string sigla { get; set; }
       public string estado { get; set; }
 
@@ -19,7 +19,7 @@ namespace Domain.Arguments
       {
          return new UfResponse()
          {
-            Id = entidade.Id,
+            id = entidade.Id,
             sigla = entidade.Sigla,
             estado = entidade.Estado
          };

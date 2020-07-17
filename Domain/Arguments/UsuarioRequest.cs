@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Domain.Arguments
 {
@@ -11,17 +9,14 @@ namespace Domain.Arguments
    /// </summary>
    public class UsuarioRequest
    {
-      public UsuarioRequest(string primeiroNome, string ultimoNome, string email, string senha)
+      public UsuarioRequest(string cpf, string senha)
       {
-         PrimeiroNome = primeiroNome ?? throw new ArgumentNullException(nameof(primeiroNome));
-         UltimoNome = ultimoNome ?? throw new ArgumentNullException(nameof(ultimoNome));
-         Email = email ?? throw new ArgumentNullException(nameof(email));
+         Cpf = cpf ?? throw new ArgumentNullException(nameof(cpf));
          Senha = senha ?? throw new ArgumentNullException(nameof(senha));
+         
       }
 
-      public string PrimeiroNome { get; set; }
-      public string UltimoNome { get; set; }
-      public string Email { get; set; }
-      public string  Senha { get; set; }
+      public string Cpf { get; set; }
+      public string Senha { get; set; }
    }
 }

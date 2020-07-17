@@ -16,7 +16,9 @@ namespace Domain.Interfaces.IRepository
       IEnumerable<Pessoa> ListarPessoas();
       IEnumerable<UF> ListarUfs();
       Pessoa CadastrarPessoa(Pessoa pessoa);
-      Pessoa EditarPessoa(int id, Pessoa pessoa);
+      Pessoa EditarPessoa(int id, string nome, string cpf, int idUf, string dataNascimento, string senha);
       bool ExcluirPessoa(int id);
+      Pessoa ConsultarPessoaPorCpfSenha(string cpf, string senha);
+      Pessoa ConsultarPessoaPorCpf(string cpf);
    }
 }

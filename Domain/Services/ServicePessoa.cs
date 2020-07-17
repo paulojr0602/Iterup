@@ -25,7 +25,7 @@ namespace Domain.Services
       {
          if (request == null) { return null; }
          
-         var entidade = new Pessoa(request.Nome, request.Cpf, request.Uf, request.DataNascimento);
+         var entidade = new Pessoa(request.Nome, request.Cpf, request.idUF, request.DataNascimento, request.Senha);
          //Dentro do PessoaResponse existe um método que converte explicitamente para retornar o objeto
          return (PessoaResponse)repositoryPessoa.CadastrarPessoa(entidade);
       }
@@ -33,7 +33,9 @@ namespace Domain.Services
       public IEnumerable<PessoaResponse> ListarPessoas()
       {
          IEnumerable<Pessoa> pessoasCollection = repositoryPessoa.ListarPessoas();
-         if (pessoasCollection.Count() == 0) { return null; }
+         if (pessoasCollection == null) { return null; } else {
+         if(pessoasCollection.Count() == 0 ){ return null; }
+         }
          var response = pessoasCollection.ToList().Select(entidade => (PessoaResponse)entidade);
 
          return response;
@@ -44,11 +46,22 @@ namespace Domain.Services
          return (PessoaResponse)repositoryPessoa.ConsultarPessoaPorId(id) ;
       }
 
+      public UsuarioAutenticadoResponse AutenticarPessoa(string cpf, string senha)
+      {
+         if (!String.IsNullOrWhiteSpace(cpf) || !String.IsNullOrWhiteSpace(senha))
+         {
+            if(!Pessoa.ValidarCpf(cpf))
+            {  
+               return null;
+            }
+         }
+         
+         return (UsuarioAutenticadoResponse)repositoryPessoa.ConsultarPessoaPorCpfSenha(cpf, senha);
+      }
+
       public PessoaResponse EditarPessoa(int id, PessoaRequest request)
       {
-         //throw new NotImplementedException();
-         var entidade = new Pessoa(request.Nome, request.Cpf, request.Uf, request.DataNascimento);
-         return (PessoaResponse)repositoryPessoa.EditarPessoa(id, entidade);
+         return (PessoaResponse)repositoryPessoa.EditarPessoa(id, request.Nome, request.Cpf, request.idUF, request.DataNascimento, request.Senha);
       }
 
       public bool Excluir(int IdPessoa)
@@ -63,7 +76,9 @@ namespace Domain.Services
       public IEnumerable<PessoaResponse> ListarPessoasPorUF(string uf)
       {
          IEnumerable<Pessoa> pessoasCollection = repositoryPessoa.ListarPessoasPorUF(uf);
-         if (pessoasCollection.Count() == 0) { return null; }
+         if (pessoasCollection == null) { return null; } else {
+            if (pessoasCollection.Count() == 0) { return null; }
+         }
          var response = pessoasCollection.ToList().Select(entidade => (PessoaResponse)entidade);
 
          return response;
@@ -72,7 +87,9 @@ namespace Domain.Services
       public IEnumerable<UfResponse> ListarUfs()
       {
          IEnumerable<UF> ufCollection = repositoryPessoa.ListarUfs();
-         if(ufCollection.Count() == 0) { return null; }
+         if (ufCollection == null) { return null; } else {
+            if (ufCollection.Count() == 0) { return null; }
+         }
          var response = ufCollection.ToList().Select(entidade => (UfResponse)entidade);
 
          return response;

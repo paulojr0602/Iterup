@@ -11,30 +11,15 @@ namespace Domain.Entities
    /// </summary>
    public class UF: EntityBase
    {
-
-      public UF(int Id, string sigla, string estado)
-      {
-         this.Id = Id;
-         if (ValidarTextoSigla(sigla)) { Sigla = sigla; }
-         if (String.IsNullOrWhiteSpace(estado)) { Estado = ""; } else { Estado = estado; }
-
-      }
+      
       public UF( string sigla, string estado)
       {
-         if (ValidarTextoSigla(sigla)) { Sigla = sigla; }
-         if (String.IsNullOrWhiteSpace(estado)) { Estado = ""; } else { Estado = estado; }
+         Sigla = sigla;          
+         Estado = estado; 
       }
 
       public string Sigla { get; private set; }
       public string Estado { get; private set; }
-
-      public static bool ValidarTextoSigla(string sigla)
-      {
-         return String.IsNullOrWhiteSpace(sigla) ? throw new ArgumentNullException(nameof(sigla), $"{nameof(sigla)} parâmetro obrigatório") : true;
-      }
-      public static bool ValidarTextoEstado(string estado)
-      {
-         return String.IsNullOrWhiteSpace(estado) ? throw new ArgumentNullException(nameof(estado), $"{nameof(estado)} parâmetro obrigatório") : true;
-      }
+           
    }
 }

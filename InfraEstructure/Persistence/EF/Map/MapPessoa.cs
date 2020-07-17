@@ -22,22 +22,14 @@ namespace InfraEstructure.Persistence.EF.Map
          builder.HasKey(p => p.Id);
          //Chave estrangeira da tabela Pessoa
          builder.HasOne(p => p.Uf)
-                .WithOne()
-                .HasForeignKey<Pessoa>(p => p.IdUf);
+                .WithMany()
+                .HasForeignKey("IdUf");
 
          builder.Property(x => x.Nome).HasMaxLength(50).IsRequired().HasColumnName("Nome");
-         builder.Property(x => x.CPF).HasMaxLength(11).IsRequired().HasColumnName("CPF");
-         builder.Property(x => x.DataNascimento).IsRequired().HasColumnName("DataNascimento");
-         //builder.Property(u => u.IdUf).IsRequired().HasColumnName("IdUF");
-
-         //builder.OwnsOne<UF>(p => p.Uf, u =>
-         //{
-         //   u.Property(s => s.Sigla).IsRequired();
-         //   u.Property(e => e.Estado).IsRequired();
-         //   u.Property(i => i.Id).IsRequired();
-         //});
-
-
+         builder.Property(x => x.Senha).HasMaxLength(50).IsRequired().HasColumnName("Senha");
+         builder.Property(x => x.CPF).HasMaxLength(14).IsRequired().HasColumnName("CPF");
+         builder.Property(x => x.DataNascimento).HasMaxLength(10).IsRequired().HasColumnName("DataNascimento");
+         
       }
    }
 }

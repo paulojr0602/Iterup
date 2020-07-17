@@ -1,5 +1,6 @@
 ﻿using Domain.Arguments;
 using Domain.Entities.Base;
+using Domain.Extensions;
 using System;
 using System.Collections.Generic;
 
@@ -12,51 +13,45 @@ namespace Domain.Entities
    /// </summary>
    public class Pessoa : EntityBase
    {
-      public Pessoa(string _Nome, string _cpf, string _uf, string _dataNascimento)
+      public Pessoa(string _Nome, string _cpf, int _idUf, string _dataNascimento, string _senha)
       {
-         if (ValidarNome(_Nome)) { Nome = _Nome; }
-         if (ValidarTextoCPF(_cpf)){ CPF = _cpf;  }
-         if (!ValidarCpf(CPF)) { throw new Exception("O CPF informado é inválido!"); }
+         Nome = _Nome; 
+         CPF = _cpf;  
          DataNascimento = ValidarData(_dataNascimento);
-         if (ValidarTextoUF(_uf)) { Uf = new UF(_uf, ""); }
+         IdUf = _idUf; 
+         Senha = _senha; 
+
+         //Conversão da senha para Criptografia MD5;
+         Senha = Senha.ConvertToMD5();
+
       }
 
-      public Pessoa(int Id, string nome, string cPF, UF uF, string _dataNascimento)
+      public Pessoa(int Id, string nome, string cPF, UF uF, string _dataNascimento, string senha)
       {
          this.Id = Id;
          Nome = nome;
          CPF = cPF;
          Uf = uF;
+         IdUf = uF.Id;
          DataNascimento = ValidarData(_dataNascimento);
+         Senha = senha;
+         Senha = Senha.ConvertToMD5();
       }
-            
+
       protected Pessoa()
       { 
       }
 
       public string Nome { get; private set; }
+      public string Senha { get; private set; }
       public string CPF { get; private set; }
       public string DataNascimento { get; private set; }
       public int IdUf { get; set; }
+
       public UF Uf { get; set; }
 
       #region "Validações da Classe"
-
-      public static bool ValidarNome(string nome)
-      {
-        return String.IsNullOrWhiteSpace(nome) ? throw new ArgumentNullException(nameof(nome), $"{nameof(Nome)} parâmetro obrigatório") : true;
-      }
-
-      public static bool ValidarTextoCPF(string _CPF)
-      {
-         return String.IsNullOrWhiteSpace(_CPF) ? throw new ArgumentNullException(nameof(_CPF), $"{nameof(CPF)} parâmetro obrigatório") : true;
-      }
-
-      public static bool ValidarTextoUF(string _UF)
-      {
-         return String.IsNullOrWhiteSpace(_UF) ? throw new ArgumentNullException(nameof(_UF), $"{nameof(UF)} Informe a sigla ou o Id da UF") : true;
-      }
-
+           
       public static bool ValidarCpf(string cpf)
       {
          int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };

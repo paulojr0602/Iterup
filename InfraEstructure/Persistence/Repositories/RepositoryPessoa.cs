@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Extensions;
 using Domain.Interfaces.IRepository;
 using InfraEstructure.Persistence.EF;
 using System;
@@ -29,14 +30,12 @@ namespace InfraEstructure.Persistence.Repositories
          //Verifica se p CPF já foi cadastrado para um Pessoa.
          if (context.Pessoas.Count() > 0) { 
             if (Existe(pessoa.CPF)){
-               throw new Exception("Pessoa já cadastrada para esse CPF.");
+               return null;
             }
          }
-         if (!String.IsNullOrWhiteSpace(pessoa.Uf.Sigla))
-         { 
-            //Buscando a entidade UF Caso tenha informado a Sigla ("GO" por exemplo)
-            pessoa.Uf = ConsultarUfPorSigla(pessoa.Uf.Sigla);
-         }
+         //Buscando a entidade UF 
+         var _uf = ConsultarUfPorId(pessoa.IdUf);
+         pessoa.Uf = _uf;
          //Adiciona a Pessoa no Contexto caso esteja tudo ok.
          context.Pessoas.Add(pessoa);
          }
@@ -44,8 +43,6 @@ namespace InfraEstructure.Persistence.Repositories
          {
             throw new Exception(ex.Message);
          }
-         //Listando as UFs para preencher a Uf dentro da entidade de Pessoa.
-         //IEnumerable<UF> ufCollection = ListarUfs();
          return pessoa;
       }
 
@@ -75,6 +72,29 @@ namespace InfraEstructure.Persistence.Repositories
          return null;
       }
 
+      public Pessoa ConsultarPessoaPorCpf(string cpf)
+      {
+         var pessoa = context.Pessoas.FirstOrDefault(x => x.CPF == cpf);
+         if (pessoa != null)
+         {
+            pessoa.Uf = ConsultarUfPorId(pessoa.IdUf);
+            return pessoa;
+         }
+         return null;
+      }
+
+      public Pessoa ConsultarPessoaPorCpfSenha(string cpf, string senha)
+      {
+         var pessoa = context.Pessoas.FirstOrDefault(x => x.CPF == cpf && x.Senha == senha.ConvertToMD5());
+         if (pessoa != null)
+         {
+            pessoa.Uf = ConsultarUfPorId(pessoa.IdUf);
+            return pessoa;
+         }
+         return null;
+      }
+
+
       public IEnumerable<Pessoa> ListarPessoasPorUF(string uf)
       {
          foreach (Pessoa pessoa in context.Pessoas)
@@ -84,25 +104,20 @@ namespace InfraEstructure.Persistence.Repositories
          return context.Pessoas.Where(x => x.Uf.Sigla == uf).ToList();
       }
 
-      public Pessoa EditarPessoa(int id, Pessoa pessoa)
+      public Pessoa EditarPessoa(int id, string nome, string cpf, int idUf, string dataNascimento, string senha)
       {
-         try
+         var pessoaBD = ConsultarPessoaPorId(id);
+         if (pessoaBD != null)
          {
-            var pessoaBD = ConsultarPessoaPorId(id);
+            //Buscando a entidade UF Caso tenha informado a Sigla ("GO" por exemplo)
+            UF _uf = ConsultarUfPorId(idUf);
+            var pessoaEditada = new Pessoa(id, nome, cpf, _uf, dataNascimento,senha);
 
-            if (pessoaBD != null)
-            {
-               var _pessoa = new Pessoa(pessoaBD.Id,pessoa.Nome, pessoa.CPF, pessoa.Uf, pessoa.DataNascimento);
-               context.Pessoas.Remove(pessoaBD);
-               context.Pessoas.Add(_pessoa);
-            } else{
-               throw new Exception("Houve um problema ao tentar encontrar o registro. Verifique.");
-            }
-         return pessoa;
-         }
-         catch (Exception ex)
-         {
-            throw new Exception(ex.Message);
+            context.Pessoas.Remove(pessoaBD);
+            context.Pessoas.Add(pessoaEditada);
+            return pessoaEditada;
+         } else{
+            return null;
          }
       }
 
@@ -137,11 +152,16 @@ namespace InfraEstructure.Persistence.Repositories
       private void CarregarUFs()
       {
          if (context.Ufs.Count() == 0 ) { 
-            context.Ufs.Add(new UF("GO", "Goiás"));
-            context.Ufs.Add(new UF("DF", "Distrito Federal"));
+            context.Ufs.Add(new UF("AM", "Amazonas"));
             context.Ufs.Add(new UF("BA", "Bahia"));
-            context.Ufs.Add(new UF("SP", "São Paulo"));
+            context.Ufs.Add(new UF("CE", "Ceará"));
+            context.Ufs.Add(new UF("DF", "Distrito Federal"));
+            context.Ufs.Add(new UF("ES", "Espírito Santo"));
+            context.Ufs.Add(new UF("GO", "Goiás"));
             context.Ufs.Add(new UF("MG", "Minas Gerais"));
+            context.Ufs.Add(new UF("PA", "Pará"));
+            context.Ufs.Add(new UF("PE", "Pernambuco"));
+            context.Ufs.Add(new UF("SP", "São Paulo"));
             context.SaveChanges();
          }
       }

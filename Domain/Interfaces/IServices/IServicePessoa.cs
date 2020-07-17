@@ -18,5 +18,6 @@ namespace Domain.Interfaces.IServices
       IEnumerable<UfResponse> ListarUfs();
       PessoaResponse EditarPessoa(int id, PessoaRequest request);
       bool Excluir(int IdPessoa);
+      UsuarioAutenticadoResponse AutenticarPessoa(string cpf, string senha);
    }
 }
