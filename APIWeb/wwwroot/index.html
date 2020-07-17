@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="UTF-8">
+   <title>Web API RestFull - Iterup</title>
+   <style>
+      input[type='submit'], button, [aria-label] {
+         cursor: pointer;
+      }
+
+      #spoiler {
+         display: none;
+      }
+
+      table {
+         font-family: Arial, sans-serif;
+         border: 1px solid;
+         border-collapse: collapse;
+      }
+
+      th {
+         background-color: #0066CC;
+         color: white;
+      }
+
+      td {
+         border: 1px solid;
+         padding: 5px;
+      }
+   </style>
+</head>
+<body>
+   <h1>Bem vindo à API de teste para Iterup</h1>
+   <h3>Esta API está usando o token de segurança Microsoft.AspNetCore.Authentication.JwtBearer.</h3>
+   <h3>Para acessar algumas rotas basta você cadastrar uma pessoa, e fazer o login. O sistema retornará o token para você.</h3>
+   <h3>Se você estiver utilizando o Postman, na aba Authorization, selecione o TYPE "Bearer Token" e cole-o no campo "Token"</h3>
+   <h3>As UFs estão sendo carregadas na aplicação, utilize a rota Get /api/pessoas/ufs para visualizar os Ids.</h3>
+   <table>
+      <tr>
+         <th>Rotas</th>
+         <th>Ação:</th>
+         <th>Exige Autenticação</th>
+      </tr>
+      <tr>
+         <td>Post /api/pessoas/?cpf&senha?</td>
+         <td>Rota para autenticação</td>
+         <td>Não</td>
+      </tr>
+      <tr>
+         <td>Get /api/pessoas</td>
+         <td>Consulta a lista de objetos Pessoas</td>
+         <td>Não</td>
+      </tr>
+      <tr>
+         <td>Get /api/pessoas/{id}</td>
+         <td>Consulta objeto Pessoa pelo código</td>
+         <td>Sim</td>
+      </tr>
+      <tr>
+         <td>Get /api/pessoas/uf/{uf}</td>
+         <td>Consulta objeto Pessoa pelo código da UF</td>
+         <td>Sim</td>
+      </tr>
+      <tr>
+         <td>Post /api/pessoas/{nome,cpf,datanascimento,iduf,senha}</td>
+         <td>Adiciona uma Pessoa</td>
+         <td>Não</td>
+      </tr>
+      <tr>
+         <td>Put /api/pessoas/{id}{nome,cpf,datanascimento,iduf,senha}</td>
+         <td>Atualiza uma Pessoa pelo seu Id</td>
+         <td>Sim</td>
+      </tr>
+      <tr>
+         <td>Delete /api/pessoas/{id}</td>
+         <td>Exclui uma pessoa pelo seu Id</td>
+         <td>Sim</td>
+      </tr>
+   </table>
+
+   <h5>Autor: Paulo Roberto de Almeida Jr. Data:17/07/2020</h5>
+   <h5>email: paulojr0602@gmail.com</h5>
+   <h5>Web API RestFull - Arquitetura ASP.Net CORE - DDD</h5>
+</body>
+</html>

@@ -29,7 +29,7 @@ namespace APIWeb.Controllers
       private readonly IHttpContextAccessor _httpContextAccessor;
 
 
-      public PessoaController(IHttpContextAccessor httpContextAccessor, IUnitOfWork unitOfWork, IServicePessoa servicePessoa): base(unitOfWork)
+      public PessoaController(IHttpContextAccessor httpContextAccessor, IUnitOfWork unitOfWork, IServicePessoa servicePessoa) : base(unitOfWork)
       {
          _httpContextAccessor = httpContextAccessor;
          _servicePessoa = servicePessoa;
@@ -99,16 +99,16 @@ namespace APIWeb.Controllers
          }
          catch (Exception ex)
          {
-            return CreatedAtAction("Post", new { HttpStatusCode.BadRequest }); ;
+            return CreatedAtAction("Post", new { HttpStatusCode.ServiceUnavailable }); ;
          }
       }
 
       // POST api/pessoas/login
       [AllowAnonymous]
       [HttpPost("login")]
-      public object PostLogin([FromBody] UsuarioRequest request,
-                        [FromServices]SigningConfigurations signingConfigurations,
-                        [FromServices]TokenConfigurations tokenConfigurations)
+      public object Post([FromBody] UsuarioRequest request,
+                         [FromServices]SigningConfigurations signingConfigurations,
+                         [FromServices]TokenConfigurations tokenConfigurations)
       {
          UsuarioAutenticadoResponse response = _servicePessoa.AutenticarPessoa(request.Cpf, request.Senha);
          if (response.Cpf != null)
@@ -170,7 +170,7 @@ namespace APIWeb.Controllers
          var pessoaResponse = JsonConvert.DeserializeObject<UsuarioAutenticadoResponse>(usuarioClaims);
 
          PessoaResponse response = _servicePessoa.EditarPessoa(id, request);
-         if (response != null)
+         if (response.CPF != null)
          {
             return await ResponseAsync(response);
          } else {
@@ -189,9 +189,9 @@ namespace APIWeb.Controllers
          var response = _servicePessoa.Excluir(id);
          if (!response)
          {
-            return  CreatedAtAction("Put", new { HttpStatusCode.BadRequest });
+            return  CreatedAtAction("Delete", new { HttpStatusCode.BadRequest });
          }
-         return CreatedAtAction("Put", new { HttpStatusCode.OK });
+         return Ok(response);
       }
 
       // GET api/pessoas/ufs

@@ -143,10 +143,7 @@ namespace APIWeb
          if (env.IsDevelopment())
          {
             app.UseDeveloperExceptionPage();
-
-         }
-
-         else
+         } else
          {
             app.UseHsts();
          }
@@ -157,7 +154,9 @@ namespace APIWeb
             x.AllowAnyOrigin();
          });
 
-         //app.UseHttpsRedirection();
+         app.UseDefaultFiles();
+         app.UseStaticFiles();
+         app.UseHttpsRedirection();
          app.UseMvc();
          
       }
